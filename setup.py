@@ -6,7 +6,7 @@ setup(
     description="""Scaleout CLI""",
     url='https://www.scaleoutsystems.com',
     include_package_data=True,
-    py_modules=['studio'],
+    py_modules=['stackn'],
     python_requires='>=3.6,<4',
     install_requires=[
         "attrdict>=2.0.1",
