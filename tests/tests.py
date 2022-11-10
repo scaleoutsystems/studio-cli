@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase, mock
 
-import stackn.auth as auth
+import studio.auth as auth
 
 
 class CLIAuthTests(TestCase):
