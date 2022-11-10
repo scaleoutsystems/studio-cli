@@ -1,12 +1,12 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='stackn-cli',
+    name='studio-cli',
     version='0.3.0',
     description="""Scaleout CLI""",
     url='https://www.scaleoutsystems.com',
     include_package_data=True,
-    py_modules=['stackn'],
+    py_modules=['studio'],
     python_requires='>=3.6,<4',
     install_requires=[
         "attrdict>=2.0.1",
