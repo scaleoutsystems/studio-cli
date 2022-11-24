@@ -227,8 +227,8 @@ def obj(object_type, project, studio_url, secure):
     for obj in objects:
         obj['object_type'] = obj_dict[str(obj['object_type'][0])]
 
-    _print_table(objects, ['Name', 'Version', 'Type', 'Created'], [
-                 'name', 'version', 'object_type', 'uploaded_at'])
+    _print_table(objects, ['Name', 'Version', 'Type', 'Created', 'ID'], [
+                 'name', 'version', 'object_type', 'uploaded_at', 'id'])
 
 
 @get.command('project')
