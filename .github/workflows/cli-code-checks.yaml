@@ -45,6 +45,6 @@ jobs:
         run: |
           flake8 .  --exclude migrations
       - name: Test with unittest
-        working-directory: ${{env.working-directory}}
         run: |
+          pip install .
           python -m unittest
