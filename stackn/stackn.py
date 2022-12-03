@@ -4,9 +4,9 @@ import subprocess
 import uuid
 
 import requests
-import stackn.auth
-import stackn.error_msg
-import stackn.s3
+
+from .auth import _get_remote, _set_current, get_config
+from .s3 import set_artifact
 
 
 def _check_status(r, error_msg="Failed"):
@@ -25,7 +25,7 @@ def _check_status(r, error_msg="Failed"):
 
 def call_admin_endpoint(name, conf={}, params=[]):
 
-    conf, status = stackn.auth.get_config(conf)
+    conf, status = get_config(conf)
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -62,7 +62,7 @@ def call_admin_endpoint(name, conf={}, params=[]):
 
 def call_project_endpoint(name, conf={}, params=[]):
 
-    conf, status = stackn.auth.get_config(conf)
+    conf, status = get_config(conf)
 
     if not status:
         out_str = (
@@ -118,7 +118,7 @@ def call_project_endpoint(name, conf={}, params=[]):
 
 def setup_project_endpoint_call(conf, endpoint_type):
 
-    conf, status = stackn.auth.get_config(conf, required=["STACKN_URL"])
+    conf, status = get_config(conf, required=["STACKN_URL"])
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -180,7 +180,7 @@ def get_endpoints(studio_url):
 
 
 def get_auth_header(conf):
-    conf, status = stackn.auth.get_config(conf)
+    conf, status = get_config(conf)
     if not status:
         return False, False
     auth_header = {
@@ -192,7 +192,7 @@ def get_auth_header(conf):
 def get_current(secure):
 
     res = {"STACKN_URL": False, "STACKN_PROJECT": False}
-    conf, status = stackn.auth.get_config({"STACKN_SECURE": secure})
+    conf, status = get_config({"STACKN_SECURE": secure})
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -207,7 +207,7 @@ def get_current(secure):
 
 def get_projects(conf={}, params=[], auth_header=[]):
 
-    conf, status = stackn.auth.get_config(conf)
+    conf, status = get_config(conf)
 
     if not status:
         print("Cannot list projects.")
@@ -243,12 +243,12 @@ def get_projects(conf={}, params=[], auth_header=[]):
 
 def get_remote(inp_conf):
 
-    conf, status = stackn.auth.get_config(inp_conf)
+    conf, status = get_config(inp_conf)
 
     if not status:
         return False
 
-    keys = stackn.auth._get_remote(conf)
+    keys = _get_remote(conf)
 
     if not keys:
         return False
@@ -268,7 +268,7 @@ def create_template(
 
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
 
-    conf, status = stackn.auth.get_config(conf, required=["STACKN_URL"])
+    conf, status = get_config(conf, required=["STACKN_URL"])
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -335,7 +335,7 @@ def create_app(
 ):
 
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
-    conf, status = stackn.auth.get_config(conf, required=["STACKN_URL"])
+    conf, status = get_config(conf, required=["STACKN_URL"])
     if not status:
         print("Failed to get current STACKn configuration file.")
         return False
@@ -410,7 +410,7 @@ def create_project(
 
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
 
-    conf, status = stackn.auth.get_config(conf, required=["STACKN_URL"])
+    conf, status = get_config(conf, required=["STACKN_URL"])
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -447,7 +447,7 @@ def create_meta_resource(filename, studio_url, project, secure):
         "STACKN_PROJECT": project,
         "STACKN_SECURE": secure,
     }
-    conf, status = stackn.auth.get_config(conf, required=["STACKN_URL"])
+    conf, status = get_config(conf, required=["STACKN_URL"])
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -515,9 +515,7 @@ def create_object(
         "STACKN_SECURE": secure_mode,
     }
 
-    conf, status = stackn.auth.get_config(
-        conf, required=["STACKN_URL", "STACKN_PROJECT"]
-    )
+    conf, status = get_config(conf, required=["STACKN_URL", "STACKN_PROJECT"])
 
     if not status:
         print("Failed to get current STACKn configuration file.")
@@ -577,7 +575,7 @@ def create_object(
         with open(model_card, "r") as f:
             model_card_html_string = f.read()
 
-    status = stackn.s3.set_artifact(
+    status = set_artifact(
         model_uid,
         model_file,
         "models",
@@ -803,7 +801,7 @@ def delete_meta_resource(
 
 
 def set_current(conf):
-    res = stackn.auth._set_current(conf)
+    res = _set_current(conf)
     if not res:
         print("Failed to set current remote URL/project.")
         if "STACKN_URL" in conf:
