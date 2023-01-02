@@ -1,5 +1,5 @@
 ![alt text](https://thumb.tildacdn.com/tild3162-6435-4365-a230-656137616436/-/resize/560x/-/format/webp/stacknlogo3.png)
-# STACKn CLI
+# Studio/STACKn CLI
 
 > Warning - This is CLI is in a experimental stage. No guarantees provided.
 
