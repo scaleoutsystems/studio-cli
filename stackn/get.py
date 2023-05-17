@@ -94,7 +94,6 @@ def app(category, secure):
 @get.command("current")
 @click.option("--secure/--insecure", required=False, default=True)
 def get_curr(secure):
-
     current = get_current(secure=secure)
 
     if not current:
@@ -113,7 +112,6 @@ def get_curr(secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def environment(project, studio_url, secure):
-
     conf = {
         "STACKN_PROJECT": project,
         "STACKN_URL": studio_url,
@@ -148,7 +146,6 @@ def environment(project, studio_url, secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def flavor(project, studio_url, secure):
-
     conf = {
         "STACKN_PROJECT": project,
         "STACKN_URL": studio_url,
@@ -192,7 +189,6 @@ def flavor(project, studio_url, secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def mlflow(project, studio_url, secure):
-
     conf = {
         "STACKN_PROJECT": project,
         "STACKN_URL": studio_url,
@@ -224,7 +220,6 @@ def mlflow(project, studio_url, secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def obj(object_type, project, studio_url, secure):
-
     conf = {
         "STACKN_OBJECT_TYPE": object_type,
         "STACKN_PROJECT": project,
@@ -269,7 +264,6 @@ def obj(object_type, project, studio_url, secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def project(studio_url, secure):
-
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure}
 
     projects = get_projects(conf=conf)
@@ -313,7 +307,6 @@ def templates(studio_url, secure):
 @get.command("remote")
 @click.option("--secure/--insecure", required=False, default=True)
 def get_rem(secure):
-
     current_remote = get_remote(inp_conf={"STACKN_SECURE": secure})
 
     if not current_remote:
