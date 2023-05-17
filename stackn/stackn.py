@@ -24,7 +24,6 @@ def _check_status(r, error_msg="Failed"):
 
 
 def call_admin_endpoint(name, conf={}, params=[]):
-
     conf, status = get_config(conf)
 
     if not status:
@@ -61,7 +60,6 @@ def call_admin_endpoint(name, conf={}, params=[]):
 
 
 def call_project_endpoint(name, conf={}, params=[]):
-
     conf, status = get_config(conf)
 
     if not status:
@@ -117,7 +115,6 @@ def call_project_endpoint(name, conf={}, params=[]):
 
 
 def setup_project_endpoint_call(conf, endpoint_type):
-
     conf, status = get_config(conf, required=["STACKN_URL"])
 
     if not status:
@@ -190,7 +187,6 @@ def get_auth_header(conf):
 
 
 def get_current(secure):
-
     res = {"STACKN_URL": False, "STACKN_PROJECT": False}
     conf, status = get_config({"STACKN_SECURE": secure})
 
@@ -206,7 +202,6 @@ def get_current(secure):
 
 
 def get_projects(conf={}, params=[], auth_header=[]):
-
     conf, status = get_config(conf)
 
     if not status:
@@ -242,7 +237,6 @@ def get_projects(conf={}, params=[], auth_header=[]):
 
 
 def get_remote(inp_conf):
-
     conf, status = get_config(inp_conf)
 
     if not status:
@@ -265,7 +259,6 @@ def create_template(
     studio_url=[],
     secure_mode=True,
 ):
-
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
 
     conf, status = get_config(conf, required=["STACKN_URL"])
@@ -333,7 +326,6 @@ def create_app(
     studio_url=[],
     secure_mode=True,
 ):
-
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
     conf, status = get_config(conf, required=["STACKN_URL"])
     if not status:
@@ -407,7 +399,6 @@ def create_project(
     studio_url=[],
     secure_mode=True,
 ):
-
     conf = {"STACKN_URL": studio_url, "STACKN_SECURE": secure_mode}
 
     conf, status = get_config(conf, required=["STACKN_URL"])
@@ -642,7 +633,6 @@ def create_appinstance(studio_url=[], project=[], data={}, secure_mode=True):
 
 
 def delete_app(name, studio_url=[], project=[], secure=True):
-
     conf = {
         "STACKN_URL": studio_url,
         "STACKN_PROJECT": project,
@@ -721,7 +711,6 @@ def delete_object(name, version=None, studio_url=[], project=[], secure=True):
 
 
 def delete_project(name, studio_url=[], secure=True):
-
     conf = {
         "STACKN_URL": studio_url,
         "STACKN_SECURE": secure,
@@ -749,7 +738,6 @@ def delete_project(name, studio_url=[], secure=True):
 def delete_meta_resource(
     resource_type, name, project=[], studio_url=[], secure=True
 ):
-
     conf = {
         "STACKN_PROJECT": project,
         "STACKN_URL": studio_url,

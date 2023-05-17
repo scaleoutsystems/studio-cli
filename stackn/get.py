@@ -39,7 +39,6 @@ def _find_dict_by_value(dicts, key, value):
         for item in dicts:
             keys += item[key] + " | "
         keys = keys[:-2]
-        
         print(f"Use -t {keys}")
 
         return []
