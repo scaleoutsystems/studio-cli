@@ -290,7 +290,11 @@ def templates(studio_url, secure):
     templateslist = list()
     for template in templates:
         tmp = dict()
-        tmp["name"] = template["name"]
+        tmp["name"] = (
+            template["name"]
+            if template["enabled"]
+            else template["name"] + " (disabled) "
+        )
         tmp["description"] = template["description"]
         templateslist.append(tmp)
 
