@@ -167,7 +167,6 @@ def _get_current(conf):
 
 
 def _set_current(conf):
-
     current = {
         "STACKN_URL": False,
         "STACKN_PROJECT": False,
@@ -363,7 +362,6 @@ def get_token(conf={}):
 
 
 def write_config(conf):
-
     studio_url = conf["STACKN_URL"]
 
     path_to_config = _get_stackn_config_path()
