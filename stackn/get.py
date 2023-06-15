@@ -32,9 +32,15 @@ def _print_table(resource, names, keys):
 def _find_dict_by_value(dicts, key, value):
     try:
         res = next(item for item in dicts if item[key] == value)
-    except Exception as e:
-        print(e)
+    except Exception:
         print("Object type {} doesn't exist.".format(value))
+
+        keys = ""
+        for item in dicts:
+            keys += item[key] + " | "
+        keys = keys[:-2]
+        print(f"Use -t {keys}")
+
         return []
     return res
 
@@ -229,7 +235,6 @@ def obj(object_type, project, studio_url, secure):
     obj_type = _find_dict_by_value(object_types, "slug", object_type)
 
     if not obj_type:
-        print("No model objects found for this project.")
         return
 
     params = {"object_type": obj_type["id"]}
