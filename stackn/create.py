@@ -7,12 +7,12 @@ from .stackn import (
     create_app,
     create_appinstance,
     create_apps,
+    create_client,
     create_meta_resource,
     create_object,
     create_project,
     create_template,
     create_templates,
-    create_client,
 )
 
 
