@@ -353,6 +353,11 @@ def s3(project, studio_url, name, secure):
 @click.option("-u", "--studio-url", required=False, default=[])
 @click.option("--secure/--insecure", required=False, default=True)
 def clients(project, studio_url, secure):
+    """List clients associated with the current project.
+
+    Returns:
+        Client: a list of json objects with the client information.
+    """
     conf = {
         "STACKN_PROJECT": project,
         "STACKN_URL": studio_url,

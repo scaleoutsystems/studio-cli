@@ -822,6 +822,17 @@ def delete_meta_resource(
 def create_client(
     name, project=[], controller_id=[], role=[], studio_url=[], secure=True
 ):
+    """Create a client for a project.
+
+    Args:
+        name (string): Name of client
+        project (string, optional): Project name. Defaults to [].
+        controller_id (string, optional): Id of controller app. Defaults to [].
+        role (string, optional): name of client role. Defaults to [].
+        studio_url (string, optional): url to studio instance. Defaults to [].
+        secure (bool, optional): http/https. Defaults to True.
+    """
+
     def get_reducer_id():
         result = controller_id
         params = {"app__category": "network", "app__slug": "reducer"}
