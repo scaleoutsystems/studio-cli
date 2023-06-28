@@ -842,7 +842,7 @@ def create_client(
                 "appinstances", params=params, conf={"STACKN_SECURE": secure}
             )
 
-            if len(app_instances) == 0:
+            if not app_instances or len(app_instances) == 0:
                 print("No controller apps found.")
                 return False
 
@@ -873,6 +873,10 @@ def create_client(
             client_roles = call_project_endpoint(
                 "client_roles", conf={"STACKN_SECURE": secure}
             )
+
+            if not client_roles or len(client_roles) == 0:
+                print("No client roles found.")
+                return False
 
             client_roles_names = []
 
@@ -906,14 +910,14 @@ def create_client(
     controller_id = get_reducer_id()
 
     if not controller_id:
-        return False
+        return
 
     print("Using controller app with ID: {}".format(controller_id))
 
     role = get_role()
 
     if not role:
-        return False
+        return
 
     print("Using role: {}".format(role))
 
@@ -921,7 +925,7 @@ def create_client(
 
     if not conf or not auth_header or not url:
         print("Failed to setup project API endpoint.")
-        return False
+        return
 
     data = {"name": name, "controller": controller_id, "role": role}
 
