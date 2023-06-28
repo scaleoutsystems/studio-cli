@@ -12,6 +12,7 @@ from .stackn import (
     create_project,
     create_template,
     create_templates,
+    create_client,
 )
 
 
@@ -166,6 +167,17 @@ def project(name, description, template, studio_url, secure):
     create_project(
         name, description=description, template=template, secure_mode=secure
     )
+
+
+@create.command("client")
+@click.argument("name")
+@click.option("-p", "--project", required=False, default=[])
+@click.option("-c", "--controller-id", required=False, default=[])
+@click.option("-r", "--role", required=False, default=[])
+@click.option("-u", "--studio-url", required=False, default=[])
+@click.option("--secure/--insecure", default=True)
+def client(name, project, controller_id, role, studio_url, secure):
+    create_client(name, project, controller_id, role, studio_url, secure)
 
 
 ALIASES = {
