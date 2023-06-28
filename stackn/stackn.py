@@ -172,6 +172,8 @@ def get_endpoints(studio_url):
     endpoints["project_templates"] = base + "/projecttemplates/"
     endpoints["resources"] = base + "/projects/{}/resources/"
     endpoints["s3"] = base + "/projects/{}/s3/"
+    endpoints["clients"] = base + "/projects/{}/clients/"
+    endpoints["client_roles"] = base + "/clientroles/"
 
     return endpoints
 
@@ -813,6 +815,128 @@ def delete_meta_resource(
         print("Deleted {}: {}".format(resource_type, name))
     else:
         print("Failed to delete {}.".format(resource_type))
+        print("Status code: {}".format(res.status_code))
+        print(res.text)
+
+
+def create_client(
+    name, project=[], controller_id=[], role=[], studio_url=[], secure=True
+):
+    """Create a client for a project.
+
+    Args:
+        name (string): Name of client
+        project (string, optional): Project name. Defaults to [].
+        controller_id (string, optional): Id of controller app. Defaults to [].
+        role (string, optional): name of client role. Defaults to [].
+        studio_url (string, optional): url to studio instance. Defaults to [].
+        secure (bool, optional): http/https. Defaults to True.
+    """
+
+    def get_reducer_id():
+        result = controller_id
+        params = {"app__category": "network", "app__slug": "reducer"}
+
+        if not result:
+            app_instances = call_project_endpoint(
+                "appinstances", params=params, conf={"STACKN_SECURE": secure}
+            )
+
+            if not app_instances or len(app_instances) == 0:
+                print("No controller apps found.")
+                return False
+
+            if len(app_instances) == 1:
+                result = app_instances[0]["id"]
+                return result
+
+            for app_instance in app_instances:
+                display_str = (
+                    f"Name: {app_instance['name']}, ID: {app_instance['id']}"
+                )
+                print(display_str)
+
+            while not result:
+                input_response = input("Enter the ID of the controller app: ")
+
+                for app in app_instances:
+                    if str(app["id"]) == input_response:
+                        result = input_response
+                        break
+
+        return result
+
+    def get_role():
+        result = role
+
+        if not result:
+            client_roles = call_project_endpoint(
+                "client_roles", conf={"STACKN_SECURE": secure}
+            )
+
+            if not client_roles or len(client_roles) == 0:
+                print("No client roles found.")
+                return False
+
+            client_roles_names = []
+
+            for client_role in client_roles:
+                name = client_role["name"]
+
+                client_roles_names.append(name)
+                display_str = f"Role: {name}"
+                print(display_str)
+
+            while not result:
+                input_response = input("Enter the role of the client: ")
+
+                if input_response in client_roles_names:
+                    result = input_response
+                else:
+                    role_names_str = " or ".join(client_roles_names)
+                    display_str = (
+                        f"Invalid role. Please enter {role_names_str}"
+                    )
+                    print(display_str)
+
+        return result
+
+    conf = {
+        "STACKN_PROJECT": project,
+        "STACKN_URL": studio_url,
+        "STACKN_SECURE": secure,
+    }
+
+    controller_id = get_reducer_id()
+
+    if not controller_id:
+        return
+
+    print("Using controller app with ID: {}".format(controller_id))
+
+    role = get_role()
+
+    if not role:
+        return
+
+    print("Using role: {}".format(role))
+
+    conf, auth_header, url = setup_project_endpoint_call(conf, "clients")
+
+    if not conf or not auth_header or not url:
+        print("Failed to setup project API endpoint.")
+        return
+
+    data = {"name": name, "controller": controller_id, "role": role}
+
+    res = requests.post(
+        url, headers=auth_header, json=data, verify=conf["STACKN_SECURE"]
+    )
+
+    if res:
+        print(res.text)
+    else:
+        print("Failed to create client.")
         print("Status code: {}".format(res.status_code))
         print(res.text)
 

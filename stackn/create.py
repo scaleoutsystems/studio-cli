@@ -7,6 +7,7 @@ from .stackn import (
     create_app,
     create_appinstance,
     create_apps,
+    create_client,
     create_meta_resource,
     create_object,
     create_project,
@@ -166,6 +167,26 @@ def project(name, description, template, studio_url, secure):
     create_project(
         name, description=description, template=template, secure_mode=secure
     )
+
+
+@create.command("client")
+@click.argument("name")
+@click.option("-p", "--project", required=False, default=[])
+@click.option("-c", "--controller-id", required=False, default=[])
+@click.option("-r", "--role", required=False, default=[])
+@click.option("-u", "--studio-url", required=False, default=[])
+@click.option("--secure/--insecure", default=True)
+def client(name, project, controller_id, role, studio_url, secure):
+    """Create a client for a project.
+    Example: stackn create client test -p test -c test -r test
+    -c, --controller-id TEXT  Controller ID
+    -p, --project TEXT        Project name
+    -r, --role TEXT           Role
+    -u, --studio-url TEXT     Studio URL
+    --secure / --insecure     Use secure connection
+    """
+
+    create_client(name, project, controller_id, role, studio_url, secure)
 
 
 ALIASES = {

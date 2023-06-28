@@ -348,6 +348,43 @@ def s3(project, studio_url, name, secure):
         )
 
 
+@get.command("clients")
+@click.option("-p", "--project", required=False, default=[])
+@click.option("-u", "--studio-url", required=False, default=[])
+@click.option("--secure/--insecure", required=False, default=True)
+def clients(project, studio_url, secure):
+    """List clients associated with the current project.
+
+    Returns:
+        Client: a list of json objects with the client information.
+    """
+    conf = {
+        "STACKN_PROJECT": project,
+        "STACKN_URL": studio_url,
+        "STACKN_SECURE": secure,
+    }
+
+    params = []
+
+    clients = call_project_endpoint("clients", params=params, conf=conf)
+
+    if not clients:
+        return False
+    elif len(clients) == 0:
+        print("There are no clients associated with the current project.")
+        return
+    else:
+        _print_table(
+            clients,
+            [
+                "Name",
+            ],
+            [
+                "name",
+            ],
+        )
+
+
 ALIASES = {
     "projects": project,
     "proj": project,
